@@ -5,61 +5,86 @@ import 'package:flutter/services.dart';
 import 'package:flutter_aliyun_identity/flutter_aliyun_identity.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
-  _MyAppState createState() => _MyAppState();
+  State<MyApp> createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
-  String _label = 'ali recognition demo';
-  int _counter = 0;
+  String _platformVersion = 'Unknown';
 
   @override
   void initState() {
     super.initState();
+    initPlatformState();
   }
 
-  void _incrementCounter() {
-    print("_incrementCounter:$_counter");
-    Future<Map> result;
-    if (_counter == 0)
-      result = FlutterAliyunIdentity.sdkInit();
-    else if (_counter == 1)
-      result = FlutterAliyunIdentity.sdkMetaInfos();
-    else {
-      Map params = new Map();
-      params["certifyId"] = "806244232f14dda3bcfee71ca734b01bd";
-      params["useMsgBox"] = false;
-      result = FlutterAliyunIdentity.sdkVerify(params);
+  // Platform messages are asynchronous, so we initialize in an async method.
+  Future<void> initPlatformState() async {
+    String platformVersion;
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    // We also handle the message potentially returning null.
+    try {
+      platformVersion = await FlutterAliyunIdentity.platformVersion ??
+          'Unknown platform version';
+    } on PlatformException {
+      platformVersion = 'Failed to get platform version.';
     }
-    result.then((result) {
-      print(result);
-      setState(() {
-        _label = result.toString();
-      });
+
+    // If the widget was removed from the tree while the asynchronous platform
+    // message was in flight, we want to discard the reply rather than calling
+    // setState to update our non-existent appearance.
+    if (!mounted) return;
+
+    setState(() {
+      _platformVersion = platformVersion;
     });
-    _counter++;
-    if (_counter > 2) _counter = 0;
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-          appBar: AppBar(
-            title: const Text('Plugin example app'),
+        appBar: AppBar(
+          title: const Text('Plugin example app'),
+        ),
+        body: Center(
+          child: Column(
+            children: [
+              Text('Running on: $_platformVersion\n'),
+              // button
+              ElevatedButton(
+                  onPressed: () async {
+                    Map initResult = await FlutterAliyunIdentity.sdkInit();
+                    print(initResult);
+                  },
+                  child: const Text('初始化')),
+              ElevatedButton(
+                  onPressed: () async {
+                    Map metaInfo = await FlutterAliyunIdentity.sdkMetaInfos();
+                    print(metaInfo);
+                  },
+                  child: const Text('sdk 信息')),
+              ElevatedButton(
+                  onPressed: () {
+                    Map params = {};
+                    params["certifyId"] = "806244232f14dda3bcfee71ca734b01bd";
+                    params["useMsgBox"] = false;
+                    var result = FlutterAliyunIdentity.sdkVerify(params);
+                    result.then((res) {
+                      print(res);
+                    });
+                  },
+                  child: const Text('开始认证'))
+            ],
           ),
-          body: Center(
-            child: Text(_label),
-          ),
-          floatingActionButton: FloatingActionButton(
-            onPressed: _incrementCounter,
-            tooltip: 'Increment',
-            child: Icon(Icons.add),
-          )),
+        ),
+      ),
     );
   }
 }
