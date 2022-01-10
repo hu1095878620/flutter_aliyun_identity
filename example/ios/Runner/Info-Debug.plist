@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key></key>
+	<string></string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
@@ -27,21 +29,20 @@
 	<key>NSCameraUsageDescription</key>
 	<string>使用相机</string>
 	<key>NSUserTrackingUsageDescription</key>
-	<string>势必广工</string>
+	<string>势工</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
+	    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>Application requires user’s location for better user experience.</string>
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>Application requires user’s location for better user experience.</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>Application requires user’s location for better user experience.</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
-	</array>
-	<key>UISupportedInterfaceOrientations~ipad</key>
-	<array>
-		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
