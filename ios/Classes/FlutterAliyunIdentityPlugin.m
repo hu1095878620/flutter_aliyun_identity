@@ -7,7 +7,7 @@
 
 @implementation FlutterAliyunIdentityPlugin
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
-    
+
     //    UIWindow* window = [[[UIApplication sharedApplication] delegate] window];
     //    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"registerWithRegistrar"
     //                                                                   message:@""
@@ -23,7 +23,7 @@
     //                                                         handler:^(UIAlertAction * action) {}];
     //    [alert addAction:cancelAction];
     //    [alert addAction:defaultAction];
-    
+
     FlutterMethodChannel* channel = [FlutterMethodChannel
                                      methodChannelWithName:@"flutter_aliyun_identity"
                                      binaryMessenger:[registrar messenger]];
@@ -41,19 +41,18 @@
         NSDictionary *info = [AliyunIdentityManager getMetaInfo];
         result(@{@"code":@(0),@"data":info});
     } else if ([@"verify" isEqualToString:call.method]) {
-        [AliyunSdk init];
         NSDictionary *info = [AliyunIdentityManager getMetaInfo];
         NSLog( @"%@", info );
-        
-        NSString *certifyId = @"0014520bd38868feebb17d930f4c8020d";
+
+        NSString *certifyId = call.arguments[@"certifyId"];
         NSMutableDictionary  *extParams = [NSMutableDictionary new];
         UIWindow* window = [[[UIApplication sharedApplication] delegate] window];
         [extParams setValue:window.rootViewController forKey:@"currentCtr"];
-        
+
         [[AliyunIdentityManager sharedInstance] verifyWith:certifyId extParams:extParams onCompletion:^(ZIMResponse *response) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 NSString *title = @"刷脸成功";
-                
+
                 switch (response.code) {
                     case 1000:
                         break;
@@ -73,9 +72,9 @@
                         break;
                 }
                 result(@{@"code" : @(response.code), @"reason": response.reason, @"certifyId":certifyId });
-                
+
             });
-            
+
         }];
     } else {
         result(FlutterMethodNotImplemented);
