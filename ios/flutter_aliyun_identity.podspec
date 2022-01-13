@@ -16,6 +16,9 @@ A new Flutter project.
   s.source_files = 'Classes/*.{h,m}'
   s.public_header_files = 'Classes/*.h'
 
+  s.static_framework = true
+
+
   s.resources = 'Assets/*'
   s.vendored_frameworks = 'Classes/AliyunFramework/*.framework'
   s.frameworks = 'CoreGraphics', 'Accelerate', 'SystemConfiguration', 'AssetsLibrary', 'CoreTelephony', 'QuartzCore', 'CoreFoundation', 'CoreLocation', 'ImageIO', 'CoreMedia', 'CoreMotion', 'AVFoundation', 'WebKit', 'AudioToolbox', 'CFNetwork', 'MobileCoreServices', 'AdSupport'
